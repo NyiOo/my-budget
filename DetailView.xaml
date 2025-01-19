@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="MyBudget.DetailView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro.Platform"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:local="clr-namespace:MyBudget"
+             mc:Ignorable="d" 
+             d:DesignHeight="350" d:DesignWidth="600" >
+    <StackPanel>
+        
+        <WrapPanel FlowDirection="LeftToRight" Orientation="Horizontal" Margin="5,5">
+            <DatePicker  x:Name="dpFrom" SelectedDate="{Binding Path=TimeFrom}" Margin="5,5" Width="115"/>
+            <DatePicker  x:Name="dpTo" SelectedDate="{Binding Path=TimeTo}" Margin="5,5" Width="115"/>
+            <ComboBox x:Name="cmbList" ItemsSource="{Binding Path=CategoryList}" Text="{Binding Path=CategoryName}" Margin="5,5" Width="150"/>
+            <GroupBox Margin="5,0" >
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <RadioButton x:Name="DataGrid" Content="Table"  Margin="5,0" IsChecked="True" VerticalContentAlignment="Center" />
+                    <RadioButton x:Name="Chart"  Content="BarChart" Margin="5,0" VerticalContentAlignment="Center">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Checked">
+                                <cal:ActionMessage MethodName="ChoiceChart">
+                                    <cal:Parameter Value="{Binding ElementName=cmbList,Path= SelectedIndex}"/>
+                                </cal:ActionMessage>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </RadioButton>
+                </StackPanel>
+            </GroupBox>             
+        </WrapPanel>
+
+        <ContentControl Margin="20,0"  cal:View.Context="{Binding State,Mode=TwoWay}" HorizontalAlignment="Center"
+                        cal:View.Model="{Binding}"/>
+    </StackPanel>
+</UserControl>

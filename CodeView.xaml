@@ -1,0 +1,77 @@
+﻿<UserControl x:Class="MyBudget.CodeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:xceed="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+             xmlns:cal="http://www.caliburnproject.org"   
+             xmlns:local="clr-namespace:MyBudget.Framework"
+             mc:Ignorable="d" 
+             d:DesignHeight="350" d:DesignWidth="600">
+    <StackPanel >
+
+        <DataGrid  Name="codeDatagrid" AutoGenerateColumns="False" CanUserAddRows="True" Height="350" Width="500"
+                  ItemsSource="{Binding DataSource}" CanUserDeleteRows="False" Margin="10" SelectionMode="Single">
+
+            <i:Interaction.Triggers>
+
+                <!--<i:EventTrigger EventName="RowEditEnding">
+                    <cal:ActionMessage MethodName="Edit">
+                        <cal:Parameter Value="$source"/>
+                        <cal:Parameter Value="$eventArgs"/>
+                    </cal:ActionMessage>
+                </i:EventTrigger>-->
+
+                <i:EventTrigger EventName="PreviewKeyDown">
+                    <cal:ActionMessage MethodName="OnDelete">
+                        <cal:Parameter Value="$source"/>
+                        <cal:Parameter Value="$eventArgs"/>
+                    </cal:ActionMessage>
+                </i:EventTrigger>
+
+                <i:EventTrigger EventName="CurrentCellChanged">
+                    <cal:ActionMessage MethodName="SaveChange">
+                        <cal:Parameter Value="$source"/>
+                        <cal:Parameter Value="$eventArgs"/>
+                    </cal:ActionMessage>
+                </i:EventTrigger>
+
+            </i:Interaction.Triggers>
+            
+            
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader" >
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                </Style>                
+            </DataGrid.ColumnHeaderStyle>
+           
+            <DataGrid.Columns >
+                <!--<DataGridTextColumn Header="ID" Width="40"  Binding="{Binding Path= CategoryID }"/>-->
+
+
+                <DataGridTextColumn Header="Category Type" Width="170" Binding="{Binding Path=Expense}" />
+
+                <DataGridTemplateColumn Header="Status ID" Width="90">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate >
+                            <TextBlock Padding="10,0,0,0"  Text="{Binding StatusID}"/>                            
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox SelectedIndex ="{Binding Path=StatusID}">
+                                <ComboBoxItem Content="Income"/>
+                                <ComboBoxItem Content="Outcome"/>
+                                <ComboBoxItem Content="Add"/>
+                            </ComboBox>
+
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>
+    </StackPanel>
+    
+</UserControl>

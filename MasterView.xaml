@@ -1,0 +1,94 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:xceed="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+             xmlns:local="clr-namespace:MyBudget.Framework"
+             xmlns:control="clr-namespace:MyBudget.Framework.CustomControl"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro.Platform"
+             x:Class="MyBudget.MasterView"            
+             mc:Ignorable="d" 
+             d:DesignHeight="430" >
+    <Control.Resources>
+        <local:EnglishNumberConverter x:Key="converter"/>      
+    </Control.Resources>
+
+
+    <StackPanel>
+        <GroupBox Header=" Data ထည့်သွင်းရန် " Margin="5,10" HorizontalAlignment="Left" >
+            <StackPanel>
+
+                <WrapPanel FlowDirection="LeftToRight" Orientation="Horizontal">                   
+                    <DatePicker x:Name="dp" SelectedDate="{Binding Date}"  Margin="5,5" Width="114"/>
+                    <ComboBox x:Name="cmb_categoryList" ItemsSource="{Binding CategoryList}" Text="{Binding CategoryName}" Margin="5,5" Width="150" />
+                    <xceed:WatermarkTextBox x:Name="StrText"  Watermark="Description" Margin="5,5" Width="150" TextWrapping="Wrap"/>
+                    <xceed:WatermarkTextBox x:Name="Kyats"  Margin="5,5" Width="120" Watermark="Kyats"  VerticalContentAlignment="Center"/>
+                </WrapPanel>
+
+             
+
+                <Button x:Name="InsertData" Content="Enter" Margin="10,5"  Width="75" HorizontalAlignment="Right"/>
+
+            </StackPanel>
+
+        </GroupBox>
+
+        <control:CustomDate x:Name="labelDate" Date="{Binding Date}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="DateChanged">
+                    <cal:ActionMessage MethodName="OnDateChange">
+                        <cal:Parameter Value="$source"/>
+                        <cal:Parameter Value="$eventArgs"/>
+                    </cal:ActionMessage>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </control:CustomDate>
+        
+        <WrapPanel Margin="5,5">
+
+            <ListView x:Name="Items" Height="300" >
+                <ListView.View >
+                    <GridView >
+                        <GridViewColumn Header="Category Type" DisplayMemberBinding="{Binding Name}"  Width="200" />
+                        <GridViewColumn Header="Money (Ks)" DisplayMemberBinding="{Binding Money ,StringFormat='#,##'}" TextBlock.TextAlignment="Center" Width="150"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+
+
+            <Grid x:Name="grid" Margin="20,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="130"  />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="30"/>
+                    
+                </Grid.RowDefinitions>
+
+                <Label Grid.Column="0" Grid.Row="0" Content="ဝင်ငွေစုစုပေါင်း" Foreground="Red" FontWeight="Bold"  VerticalContentAlignment="Center"/>
+                <Label Grid.Column="0" Grid.Row="1" Content="ယခင်လလက်ကျန်" Foreground="Red" FontWeight="Bold"  VerticalContentAlignment="Center"/>
+                <Label Grid.Column="0" Grid.Row="2" Content="ဝင်ငွေမဟုတ်သည့်ငွေ" Foreground="Red" FontWeight="Bold"  VerticalContentAlignment="Center"/>
+                <Label Grid.Column="0" Grid.Row="3" Content="ထွက်ငွေစုစုပေါင်း" Foreground="Blue" FontWeight="Bold" VerticalContentAlignment="Center"/>
+                <Label Grid.Column="0" Grid.Row="5" Content="လက်ကျန်ငွေ" Foreground="Green" FontWeight="Bold" VerticalContentAlignment="Center"/>
+                <TextBlock   Grid.Column="1" Grid.Row="0" Text="{Binding Money[0],StringFormat='#,##'}" VerticalAlignment="Center" HorizontalAlignment="Right"  />
+                <TextBlock   Grid.Column="1" Grid.Row="1" Text="{Binding Money[1],StringFormat='#,##'}" VerticalAlignment="Center" HorizontalAlignment="Right"  />
+                <TextBlock   Grid.Column="1" Grid.Row="2" Text="{Binding Money[4],StringFormat='#,##'}" VerticalAlignment="Center" HorizontalAlignment="Right"  />
+                <TextBlock  Grid.Column="1" Grid.Row="3" Text="{Binding Money[2],StringFormat='#,##'}" VerticalAlignment="Center" HorizontalAlignment="Right" />
+                <Line Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" Stroke="Red" StrokeThickness="2" X1="0" Y1="0" X2="{Binding ActualWidth, ElementName=grid}" Y2="0" />
+                <TextBlock  Grid.Column="1" Grid.Row="5" Text ="{Binding Money[3] ,StringFormat='#,##'}" VerticalAlignment="Center" HorizontalAlignment="Right" />
+
+
+            </Grid>
+
+        </WrapPanel>
+    </StackPanel>
+</UserControl>
